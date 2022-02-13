@@ -1,6 +1,6 @@
 let routes = {}
 let templates = {}
-
+let current;
 let app_div = document.getElementById("app")
 
 function home(){
@@ -8,15 +8,26 @@ function home(){
     let link = document.createElement("a")
     link.href = '#/about'
     link.innerText = 'About'
-
     div.innerHTML = "<h1>Home<h1>"
     div.appendChild(link)
 
-    app_div.appendChild(div)
-
+    
+    if(current!=null){
+       app_div.removeChild(current)
+       app_div.appendChild(div)
+       current = div
+    }else{
+        app_div.appendChild(div)
+        current = div
+    }
+    
 }
 
+
+
+
 function about(){
+    
     let div = document.createElement("div")
     let link = document.createElement("a")
 
@@ -25,7 +36,17 @@ function about(){
 
     div.innerHTML = '<h1>About</h1>';
     div.appendChild(link);
-    app_div.appendChild(div);
+
+    if(current!=null){
+        app_div.removeChild(current)
+        app_div.appendChild(div)
+        current = div
+     }else{
+         app_div.appendChild(div)
+         current = div
+     }
+
+
 
 }
 
@@ -64,6 +85,7 @@ function resolveRoute(route){
 }
 
 function router(evt){
+    //console.log(window.location.hash.slice(1))
     let url = window.location.hash.slice(1) || '/'
     let route = resolveRoute(url)
 
@@ -72,5 +94,3 @@ function router(evt){
 
 window.addEventListener('load',router)
 window.addEventListener('hashchange',router)
-
-
